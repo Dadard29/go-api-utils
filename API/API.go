@@ -8,8 +8,14 @@ import (
 )
 
 type API struct {
-	Accessor *config.Accessor
-	Logger log.Logger
-	Connector *database.Connector
-	Service service.Service
+	Config   *config.Accessor
+	Logger   log.Logger
+	Database *database.Connector
+	Service  service.Service
+}
+
+type response struct {
+	Status bool
+	Message string
+	Content interface{}
 }

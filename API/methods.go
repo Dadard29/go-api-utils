@@ -6,5 +6,5 @@ func (a API) Start() {
 
 func (a API) Stop() {
 	a.Service.Stop()
-	a.Connector.Close()
+	a.Database.Close()
 }
