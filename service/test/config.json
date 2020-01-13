@@ -1,0 +1,19 @@
+{
+  "api": {
+    "server": {
+      "host": "localhost",
+      "port": "8080",
+      "readTimeout": "15",
+      "writeTimeout": "15",
+      "idleTimeout": "60"
+    },
+    "infos": {
+      "title": "test-API",
+      "version": "1",
+      "description": "blablabla",
+      "contactEmail": "mail@",
+      "license": "WTFPL",
+      "licenseUrl": "http://wtfpl.net"
+    }
+  }
+}
