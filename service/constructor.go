@@ -9,7 +9,7 @@ import (
 
 var infosObj infos
 var apiLogger log.Logger
-var routeList map[string]func(w http.ResponseWriter, r *http.Request)
+var routeList RouteMapping
 
 func addJsonHeader(w http.ResponseWriter) {
 	w.Header().Add("Content-Type", "application/json")
@@ -17,7 +17,7 @@ func addJsonHeader(w http.ResponseWriter) {
 
 func routesListRoute(w http.ResponseWriter, r *http.Request) {
 	var routeNameList []string
-	for k, _ := range routeList {
+	for k, _ := range routeList.Mapping {
 		routeNameList = append(routeNameList, k)
 	}
 
@@ -43,7 +43,7 @@ func healthRoute(w http.ResponseWriter, r *http.Request) {
 	apiLogger.CheckErr(err)
 }
 
-func NewService(routes map[string]func(w http.ResponseWriter, r *http.Request), serverConfig map[string]string,
+func NewService(routes RouteMapping, serverConfig map[string]string,
 	infosConfig map[string]string, verbose bool) Service {
 		var err error
 		infosObj, err = newInfos(infosConfig)
@@ -53,16 +53,16 @@ func NewService(routes map[string]func(w http.ResponseWriter, r *http.Request), 
 
 		apiLogger = log.NewLogger(infosObj.Title, logLevel.LevelFromBool(verbose))
 
-		if _, check := routes["/infos"]; ! check {
-			routes["/infos"] = infosRoute
+		if _, check := routes.Mapping["/infos"]; ! check {
+			routes.Mapping["/infos"] = Route{infosRoute, http.MethodGet}
 		}
 
-		if _, check := routes["/health"]; ! check {
-			routes["/health"] = healthRoute
+		if _, check := routes.Mapping["/health"]; ! check {
+			routes.Mapping["/health"] = Route{healthRoute, http.MethodGet}
 		}
 
-		if _, check := routes["/routes"]; ! check {
-			routes["/routes"] = routesListRoute
+		if _, check := routes.Mapping["/routes"]; ! check {
+			routes.Mapping["/routes"] = Route{routesListRoute, http.MethodGet}
 		}
 
 		routeList = routes

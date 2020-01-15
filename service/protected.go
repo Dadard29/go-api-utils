@@ -43,11 +43,11 @@ func loggingMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func newRouter(handlers map[string]func (w http.ResponseWriter, r *http.Request)) *mux.Router {
+func newRouter(routeMapping RouteMapping) *mux.Router {
 	router := mux.NewRouter()
 
-	for i, h := range handlers {
-		router.HandleFunc(i, h)
+	for i, h := range routeMapping.Mapping {
+		router.HandleFunc(i, h.Handler).Methods(h.Method)
 	}
 
 	router.Use(loggingMiddleware)

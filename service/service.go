@@ -20,4 +20,13 @@ type Service struct {
 	logger log.Logger
 }
 
+type Route struct {
+	Handler func (w http.ResponseWriter, r *http.Request)
+	Method string
+}
+
+type RouteMapping struct {
+	Mapping map[string]Route
+}
+
 

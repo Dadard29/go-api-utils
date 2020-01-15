@@ -5,13 +5,12 @@ import (
 	"github.com/Dadard29/go-api-utils/log"
 	"github.com/Dadard29/go-api-utils/log/logLevel"
 	"github.com/Dadard29/go-api-utils/service"
-	"net/http"
 )
 
 func NewAPI(
 	name string,
 	configPath string,
-	routeList map[string]func(w http.ResponseWriter, r *http.Request),
+	routeList service.RouteMapping,
 	verbose bool,
 	) API {
 		var api API
