@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/Dadard29/go-api-utils/log"
+	"github.com/gorilla/mux"
 	"net/http"
 )
 
@@ -18,6 +19,12 @@ type Service struct {
 	srv *http.Server
 	infos infos
 	logger log.Logger
+	router *mux.Router
+	serverConfig map[string]string
+}
+
+func (a *Service) Router() *mux.Router {
+	return a.router
 }
 
 type Route struct {

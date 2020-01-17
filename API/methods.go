@@ -5,6 +5,8 @@ func (a API) Start() {
 }
 
 func (a API) Stop() {
-	a.Service.Stop()
+	err := a.Service.Stop()
+	a.Logger.CheckErr(err)
+
 	a.Database.Close()
 }

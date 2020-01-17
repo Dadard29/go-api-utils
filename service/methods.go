@@ -2,8 +2,12 @@ package service
 
 import (
 	"context"
+	"errors"
+	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -18,6 +22,12 @@ func (a *Service) InfosString() string {
 func (a *Service) Start() {
 	a.logger.Info("starting the API service")
 	// a.srv.ListenAndServe()
+
+	server, err := newServer(a.router, a.serverConfig, apiLogger)
+	apiLogger.CheckErr(err)
+
+	a.srv = server
+
 	go func() {
 		a.srv.ListenAndServe()
 	}()
@@ -27,10 +37,39 @@ func (a *Service) Start() {
 	<-c
 }
 
-func (a *Service) Stop() {
+func (a *Service) Stop() error {
+	if a.srv == nil {
+		msg := "server not started. start it first you idiot."
+		a.logger.Error("server not started. start it first you idiot.")
+		return errors.New(msg)
+	}
+
 	a.logger.Info("stopping the API service")
 	var wait time.Duration
 	ctx, _ := context.WithTimeout(context.Background(), wait)
 	a.srv.Shutdown(ctx)
+
+	a.srv = nil
+	return nil
+}
+
+func (a *Service) IsRunning() bool {
+	return a.srv != nil
+}
+
+func (a *Service) AddFileServer(prefix string, relativePath string) {
+	fileServerRoot, err := filepath.Abs(relativePath)
+	a.logger.CheckErr(err)
+
+	slash := "/"
+	if ! strings.HasPrefix(prefix, slash) {
+		prefix = slash + prefix
+	}
+
+	if ! strings.HasSuffix(prefix, slash) {
+		prefix = prefix + slash
+	}
+
+	a.router.PathPrefix(prefix).Handler(http.StripPrefix(prefix, http.FileServer(http.Dir(fileServerRoot))))
 }
 

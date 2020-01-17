@@ -20,9 +20,9 @@ var accessor = config.NewAccessor("service/test/config.json", false)
 var serverConfig, _ = accessor.GetSubcategoryFromFile("service", "server")
 var infosConfig, _ = accessor.GetSubcategoryFromFile("service", "infos")
 
-var routes = map[string]func(w http.ResponseWriter, r *http.Request) {
-	"/test": testRoute,
-}
+var routes = service.RouteMapping{Mapping: map[string]service.Route{
+	"/test": service.Route{Handler: testRoute, Method: http.MethodGet},
+}}
 
 var a = service.NewService(routes, serverConfig, infosConfig, true)
 

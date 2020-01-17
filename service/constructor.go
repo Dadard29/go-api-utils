@@ -69,15 +69,12 @@ func NewService(routes RouteMapping, serverConfig map[string]string,
 
 		router := newRouter(routes)
 
-		server, err := newServer(router, serverConfig, apiLogger)
-		if err != nil {
-			panic(err)
-		}
-
 		return Service{
-			srv:    server,
+			srv: nil,
+			router: router,
 			infos:  infosObj,
 			logger: apiLogger,
+			serverConfig: serverConfig,
 		}
 }
 
