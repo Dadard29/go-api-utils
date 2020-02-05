@@ -12,7 +12,7 @@ func (logger *Logger) CheckErrPanic(err error) {
 
 func (logger *Logger) CheckErrFatal(err error) {
 	if err != nil {
-		logger.Fatal(err.Error())
+		logger.logger.Fatal(err)
 	}
 }
 
