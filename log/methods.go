@@ -6,8 +6,15 @@ import (
 	"strings"
 )
 
+// if prefix and suffix of s is `, no format is applied
 func (logger *Logger) Log(s string, level int) int {
-	content := strings.ToLower(s)
+	var content string
+	if strings.HasPrefix(s, "`") && strings.HasSuffix(s, "`") {
+		content = strings.Trim(s, "`")
+	} else {
+		content = strings.ToLower(s)
+	}
+
 	if level >= logger.level {
 		levelStr, err := getLevelName(level)
 		if err != nil {
