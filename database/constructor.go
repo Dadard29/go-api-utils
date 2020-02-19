@@ -26,8 +26,13 @@ func NewConnector(configMap map[string]string, verbose bool, modelList []interfa
 
 	usernameValue := os.Getenv(dbConfig.usernameKey)
 	passwordValue := os.Getenv(dbConfig.passwordKey)
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", usernameValue, passwordValue,
-		dbConfig.host, dbConfig.port, dbConfig.databaseName)
+
+	// added so gorm can parse the date object in the sql format
+	// https://stackoverflow.com/questions/45040319/unsupported-scan-storing-driver-value-type-uint8-into-type-time-time
+	parseTime := "?parseTime=true"
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s%s", usernameValue, passwordValue,
+		dbConfig.host, dbConfig.port, dbConfig.databaseName, parseTime)
 
 	logger.Debug(fmt.Sprintf("connecting to %s...", dbConfig.databaseName))
 	db, err := gorm.Open("mysql", dsn)
