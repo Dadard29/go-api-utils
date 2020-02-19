@@ -17,11 +17,11 @@ func testRoute(w http.ResponseWriter, r *http.Request) {
 
 var accessor = config.NewAccessor("service/test/config.json", false)
 
-var serverConfig, _ = accessor.GetSubcategoryFromFile("service", "server")
-var infosConfig, _ = accessor.GetSubcategoryFromFile("service", "infos")
+var serverConfig, _ = accessor.GetSubcategoryFromFile("api", "server")
+var infosConfig, _ = accessor.GetSubcategoryFromFile("api", "infos")
 
 var routes = service.RouteMapping{Mapping: map[string]service.Route{
-	"/test": service.Route{Handler: testRoute, Method: http.MethodGet},
+	"/test": service.Route{Handler: testRoute, Method: []string{http.MethodGet}},
 }}
 
 var a = service.NewService(routes, serverConfig, infosConfig, true)

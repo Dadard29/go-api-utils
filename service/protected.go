@@ -47,7 +47,7 @@ func newRouter(routeMapping RouteMapping) *mux.Router {
 	router := mux.NewRouter()
 
 	for i, h := range routeMapping.Mapping {
-		router.HandleFunc(i, h.Handler).Methods(h.Method)
+		router.HandleFunc(i, h.Handler).Methods(h.Method...)
 	}
 
 	router.Use(loggingMiddleware)

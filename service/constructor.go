@@ -54,15 +54,15 @@ func NewService(routes RouteMapping, serverConfig map[string]string,
 		apiLogger = log.NewLogger(infosObj.Title, logLevel.LevelFromBool(verbose))
 
 		if _, check := routes.Mapping["/infos"]; ! check {
-			routes.Mapping["/infos"] = Route{infosRoute, http.MethodGet}
+			routes.Mapping["/infos"] = Route{infosRoute, []string{http.MethodGet}}
 		}
 
 		if _, check := routes.Mapping["/health"]; ! check {
-			routes.Mapping["/health"] = Route{healthRoute, http.MethodGet}
+			routes.Mapping["/health"] = Route{healthRoute, []string{http.MethodGet}}
 		}
 
 		if _, check := routes.Mapping["/routes"]; ! check {
-			routes.Mapping["/routes"] = Route{routesListRoute, http.MethodGet}
+			routes.Mapping["/routes"] = Route{routesListRoute, []string{http.MethodGet}}
 		}
 
 		routeList = routes
