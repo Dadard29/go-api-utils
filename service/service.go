@@ -29,7 +29,7 @@ func (a *Service) Router() *mux.Router {
 
 type Route struct {
 	Handler func (w http.ResponseWriter, r *http.Request)
-	Method string
+	Method []string
 }
 
 type RouteMapping struct {
