@@ -2,6 +2,7 @@ package API
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -40,4 +41,15 @@ func CheckHttpMethod(r *http.Request, expectedMethod string) bool {
 		return false
 	}
 	return true
+}
+
+func ParseJsonBody(r *http.Request, object interface{}) error {
+	defer r.Body.Close()
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(body, object)
 }
