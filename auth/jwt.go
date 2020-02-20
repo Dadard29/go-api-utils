@@ -65,7 +65,7 @@ func VerifyJwtHS256(token []byte, secret string) (interface{}, error) {
 func readPrivateKeyFile(pathPrivateKeyFile string) (*rsa.PrivateKey, error) {
 	priv, err := ioutil.ReadFile(pathPrivateKeyFile)
 	if err != nil {
-		panic(err)
+		return nil, errors.New("error while reading private key file")
 	}
 	privPem, _ := pem.Decode(priv)
 	if privPem.Type != "PRIVATE KEY" {
