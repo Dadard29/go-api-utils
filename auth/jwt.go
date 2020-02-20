@@ -61,7 +61,7 @@ func VerifyJwtHS256(token []byte, secret string) (interface{}, error) {
 
 
 // private key generated with
-// openssl genrsa 2048 | openssl pkcs8 -topk8 -nocrypt
+// openssl genrsa 2048 | openssl pkcs8 -topk8 -nocrypt -out auth/test/private.pem
 func readPrivateKeyFile(pathPrivateKeyFile string) (*rsa.PrivateKey, error) {
 	priv, err := ioutil.ReadFile(pathPrivateKeyFile)
 	if err != nil {

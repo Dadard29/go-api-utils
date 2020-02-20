@@ -20,6 +20,8 @@ var subject = "subject"
 var audience = []string{"audience"}
 var validity = 24
 
+var path = "auth/test/private.pem"
+
 func TestJwtPlain(t *testing.T) {
 	jwt, err := auth.NewJwtHS256(
 		secret,
@@ -57,12 +59,12 @@ func TestJwtCiphered(t *testing.T) {
 
 	fmt.Println(string(jwt))
 
-	cipheredToken, err := auth.CipherJwtWithJwe("auth/test/key_rsa", jwt)
+	cipheredToken, err := auth.CipherJwtWithJwe(path, jwt)
 	if err != nil {
 		t.Error(err)
 	}
 	fmt.Println(string(cipheredToken))
-	deciphered, err := auth.DecipherJwtWithJwe("auth/test/key_rsa", cipheredToken)
+	deciphered, err := auth.DecipherJwtWithJwe(path, cipheredToken)
 	if err != nil {
 		t.Error(err)
 	}
