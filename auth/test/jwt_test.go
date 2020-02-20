@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Dadard29/go-api-utils/auth"
 	"testing"
+	"time"
 )
 
 type Payload struct {
@@ -18,7 +19,7 @@ var secret = "secret"
 var issuer = "issuer"
 var subject = "subject"
 var audience = []string{"audience"}
-var validity = 24
+var validity = 24 * time.Hour
 
 var path = "auth/test/private.pem"
 
@@ -41,7 +42,7 @@ func TestJwtPlain(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Println(newPl)
+	fmt.Println(*newPl)
 }
 
 func TestJwtCiphered(t *testing.T) {

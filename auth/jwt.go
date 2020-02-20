@@ -12,8 +12,13 @@ import (
 	"time"
 )
 
+type JwtPayload struct {
+	jwt.Payload
+	Infos interface{}
+}
+
 func NewJwtHS256(secret string,
-	issuer string, subject string, audience []string, validityDuration int,
+	issuer string, subject string, audience []string, validityDuration time.Duration,
 	payload interface{}) ([]byte, error) {
 
 	secretHmac := jwt.NewHS256([]byte(secret))
@@ -28,7 +33,7 @@ func NewJwtHS256(secret string,
 			Issuer:         issuer,
 			Subject:        subject,
 			Audience:       audience,
-			ExpirationTime: jwt.NumericDate(now.Add(time.Duration(validityDuration) * time.Hour)),
+			ExpirationTime: jwt.NumericDate(now.Add(validityDuration)),
 			NotBefore:      nil,
 			IssuedAt:       jwt.NumericDate(now),
 			JWTID:          "",
@@ -44,24 +49,24 @@ func NewJwtHS256(secret string,
 	return token, nil
 }
 
-func VerifyJwtHS256(token []byte, secret string) (interface{}, error) {
+func VerifyJwtHS256(token []byte, secret string) (*JwtPayload, error) {
 	secretHmac := jwt.NewHS256([]byte(secret))
-	var pl struct {
-		jwt.Payload
-		Infos interface{}
-	}
+	var pl JwtPayload
 
-	_, err := jwt.Verify(token, secretHmac, &pl)
+	expValidator := jwt.ExpirationTimeValidator(time.Now())
+	validator := jwt.ValidatePayload(&pl.Payload, expValidator)
+
+	_, err := jwt.Verify(token, secretHmac, &pl, jwt.ValidateHeader, validator)
 	if err != nil {
 		return nil, err
 	}
 
-	return pl, nil
+	return &pl, nil
 }
 
 
 // private key generated with
-// openssl genrsa 2048 | openssl pkcs8 -topk8 -nocrypt -out auth/test/private.pem
+// openssl genrsa 2048 | openssl pkcs8 -topk8 -nocrypt -out private.pem
 func readPrivateKeyFile(pathPrivateKeyFile string) (*rsa.PrivateKey, error) {
 	priv, err := ioutil.ReadFile(pathPrivateKeyFile)
 	if err != nil {
