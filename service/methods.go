@@ -24,7 +24,7 @@ func (a *Service) Start() {
 	// a.srv.ListenAndServe()
 
 	server, err := newServer(a.router, a.serverConfig, apiLogger)
-	apiLogger.CheckErr(err)
+	apiLogger.CheckErrFatal(err)
 
 	a.srv = server
 

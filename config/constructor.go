@@ -9,7 +9,7 @@ func NewAccessor(path string, verbose bool) *Accessor {
 	logger := log.NewLogger("accessor", logLevel.LevelFromBool(verbose))
 
 	file, err := newFile(path)
-	logger.CheckErr(err)
+	logger.CheckErrFatal(err)
 	logger.Debug("Loaded config file")
 
 	env := newEnv()

@@ -36,7 +36,7 @@ func NewConnector(configMap map[string]string, verbose bool, modelList []interfa
 
 	logger.Debug(fmt.Sprintf("connecting to %s...", dbConfig.databaseName))
 	db, err := gorm.Open("mysql", dsn)
-	logger.CheckErr(err)
+	logger.CheckErrFatal(err)
 	logger.Info(fmt.Sprintf("connected to %s...", dbConfig.databaseName))
 
 	for _, v := range modelList {

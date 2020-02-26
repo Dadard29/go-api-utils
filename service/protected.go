@@ -68,6 +68,10 @@ func newInfos(config map[string]string) (infos, error) {
 		return infos{}, errors.New("wrong service title format: no space allowed")
 	}
 
+	if version == "" {
+		return infos{}, errors.New("no version given")
+	}
+
 	if ! strings.Contains(contactEmail, "@") {
 		return infos{}, errors.New("wrong email format: missing '@'")
 	}
