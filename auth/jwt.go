@@ -49,6 +49,7 @@ func NewJwtHS256(secret string,
 	return token, nil
 }
 
+// verify the given JWT against the secret and the expiration date
 func VerifyJwtHS256(token []byte, secret string) (*JwtPayload, error) {
 	secretHmac := jwt.NewHS256([]byte(secret))
 	var pl JwtPayload

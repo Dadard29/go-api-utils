@@ -4,6 +4,7 @@ import (
 	"github.com/Dadard29/go-api-utils/log"
 	"github.com/gorilla/mux"
 	"net/http"
+	"net/url"
 )
 
 type infos struct {
@@ -12,7 +13,7 @@ type infos struct {
 	Description string
 	ContactEmail string
 	License string
-	LicenseUrl string
+	LicenseUrl *url.URL
 }
 
 type Service struct {

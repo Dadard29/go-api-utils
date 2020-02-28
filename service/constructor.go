@@ -29,7 +29,7 @@ func routesListRoute(w http.ResponseWriter, r *http.Request) {
 
 func infosRoute(w http.ResponseWriter, r *http.Request) {
 	addJsonHeader(w)
-	err := json.NewEncoder(w).Encode(infosObj)
+	err := json.NewEncoder(w).Encode(infosObj.toMap())
 	apiLogger.CheckErr(err)
 }
 

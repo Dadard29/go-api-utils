@@ -6,6 +6,7 @@ import (
 	"github.com/Dadard29/go-api-utils/log"
 	"github.com/gorilla/mux"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -30,7 +31,7 @@ func (i infos) toMap() map[string]string {
 		"Description": i.Description,
 		"ContactEmail": i.ContactEmail,
 		"License": i.License,
-		"LicenseUrl": i.LicenseUrl,
+		"LicenseUrl": i.LicenseUrl.String(),
 	}
 }
 
@@ -62,7 +63,11 @@ func newInfos(config map[string]string) (infos, error) {
 	description := config["description"]
 	contactEmail := config["contactEmail"]
 	license := config["license"]
-	licenseUrl := config["licenseUrl"]
+	licenseUrl, err := url.Parse(config["licenseUrl"])
+	if err != nil {
+		return infos{}, errors.New("error while parsing license url")
+	}
+
 
 	if strings.Contains(title, " ") {
 		return infos{}, errors.New("wrong service title format: no space allowed")
@@ -74,10 +79,6 @@ func newInfos(config map[string]string) (infos, error) {
 
 	if ! strings.Contains(contactEmail, "@") {
 		return infos{}, errors.New("wrong email format: missing '@'")
-	}
-
-	if ! strings.Contains(licenseUrl, "http://") && ! strings.Contains(licenseUrl, "https://") {
-		return infos{}, errors.New("wrong license url format: unknown scheme")
 	}
 
 	return infos{
