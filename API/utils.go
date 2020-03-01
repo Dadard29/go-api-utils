@@ -32,8 +32,12 @@ func BuildErrorResponse(httpCode int, message string, w http.ResponseWriter) err
 	})
 }
 
-func BuildMethodNotAllowedResponse(w http.ResponseWriter) {
-	_ = BuildErrorResponse(http.StatusMethodNotAllowed, MethodNotAllowed, w)
+func BuildMissingParameter(w http.ResponseWriter) error {
+	return BuildErrorResponse(http.StatusBadRequest, "missing parameter", w)
+}
+
+func BuildMethodNotAllowedResponse(w http.ResponseWriter) error {
+	return BuildErrorResponse(http.StatusMethodNotAllowed, MethodNotAllowed, w)
 }
 
 func CheckHttpMethod(r *http.Request, expectedMethod string) bool {
