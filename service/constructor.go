@@ -13,6 +13,7 @@ var routeList RouteMapping
 
 func addJsonHeader(w http.ResponseWriter) {
 	w.Header().Add("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 }
 
 func routesListRoute(w http.ResponseWriter, r *http.Request) {
@@ -24,12 +25,15 @@ func routesListRoute(w http.ResponseWriter, r *http.Request) {
 	addJsonHeader(w)
 
 	err := json.NewEncoder(w).Encode(routeNameList)
+	//err := API.BuildJsonResponse(true, "route list retrieved", routeNameList, w)
 	apiLogger.CheckErr(err)
 }
 
 func infosRoute(w http.ResponseWriter, r *http.Request) {
 	addJsonHeader(w)
+
 	err := json.NewEncoder(w).Encode(infosObj.toMap())
+	//err := API.BuildJsonResponse(true, "infos retrieved", infosObj.toMap(), w)
 	apiLogger.CheckErr(err)
 }
 
@@ -40,6 +44,8 @@ func healthRoute(w http.ResponseWriter, r *http.Request) {
 	}{
 		Status: true,
 	})
+
+	//err := API.BuildJsonResponse(true, "health check done", "", w)
 	apiLogger.CheckErr(err)
 }
 

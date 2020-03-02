@@ -13,7 +13,8 @@ const (
 )
 
 func BuildJsonResponse(status bool, message string, content interface{}, w http.ResponseWriter) error {
-	w.Header().Add("Content-Type", "application/json")
+	// w.Header().Add("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
 	return json.NewEncoder(w).Encode(response{
 		Status:  status,
@@ -24,6 +25,7 @@ func BuildJsonResponse(status bool, message string, content interface{}, w http.
 
 func BuildErrorResponse(httpCode int, message string, w http.ResponseWriter) error {
 	w.Header().Add("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(httpCode)
 	return json.NewEncoder(w).Encode(response{
 		Status:  false,
