@@ -34,6 +34,14 @@ func BuildErrorResponse(httpCode int, message string, w http.ResponseWriter) err
 	})
 }
 
+func BuildPreflightResponse(w http.ResponseWriter) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
+	w.WriteHeader(http.StatusNoContent)
+}
+
 func BuildMissingParameter(w http.ResponseWriter) error {
 	return BuildErrorResponse(http.StatusBadRequest, "missing parameter", w)
 }

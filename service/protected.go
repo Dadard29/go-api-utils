@@ -48,6 +48,17 @@ func newRouter(routeMapping RouteMapping) *mux.Router {
 	router := mux.NewRouter()
 
 	for i, h := range routeMapping.Mapping {
+		if h.Method != nil {
+			in := false
+			for _, m := range h.Method {
+				if m == http.MethodOptions {
+					in = true
+				}
+			}
+			if !in {
+				h.Method = append(h.Method, http.MethodOptions)
+			}
+		}
 		router.HandleFunc(i, h.Handler).Methods(h.Method...)
 	}
 
