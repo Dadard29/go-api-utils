@@ -13,6 +13,7 @@ import (
 )
 
 var title string
+var corsOrigin string
 
 func (i infos) toString() string {
 	return fmt.Sprintf("\n===== * =====\n" +
@@ -44,26 +45,30 @@ func loggingMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func newRouter(routeMapping RouteMapping) *mux.Router {
-	router := mux.NewRouter()
+func corsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", corsOrigin)
+	w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
+	w.WriteHeader(http.StatusNoContent)
+}
 
-	for i, h := range routeMapping.Mapping {
-		if h.Method != nil {
-			in := false
-			for _, m := range h.Method {
-				if m == http.MethodOptions {
-					in = true
-				}
+func newRouter(routeMapping RouteMapping, origin string) (*mux.Router, error) {
+	router := mux.NewRouter()
+	corsOrigin = origin
+
+	for route, h := range routeMapping {
+		for method, h := range h.MethodMapping {
+			if method == http.MethodOptions {
+				return nil, errors.New("OPTIONS method is reserved for CORS stuff")
 			}
-			if !in {
-				h.Method = append(h.Method, http.MethodOptions)
-			}
+			router.HandleFunc(route, h).Methods(method)
 		}
-		router.HandleFunc(i, h.Handler).Methods(h.Method...)
+
+		router.HandleFunc(route, corsHandler).Methods(http.MethodOptions)
 	}
 
 	router.Use(loggingMiddleware)
-	return router
+	return router, nil
 }
 
 func newInfos(config map[string]string) (infos, error) {

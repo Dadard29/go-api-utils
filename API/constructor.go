@@ -24,8 +24,17 @@ func NewAPI(
 		infosConfig, err := accessor.GetSubcategoryFromFile("api", "infos")
 		logger.CheckErrFatal(err)
 
-		if infosConfig["version"] == "" {
+		if _, check := infosConfig["version"]; ! check {
 			infosConfig["version"] = accessor.GetEnv("VERSION")
+		}
+
+		if _, check := serverConfig["corsOrigin"]; !check {
+			corsOrigin := accessor.GetEnv("CORS_ORIGIN")
+			if corsOrigin == "" {
+				logger.Fatal("missing configuration value for CORS_ORIGIN")
+			} else {
+				serverConfig["corsOrigin"] = corsOrigin
+			}
 		}
 
 

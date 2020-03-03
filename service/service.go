@@ -28,13 +28,13 @@ func (a *Service) Router() *mux.Router {
 	return a.router
 }
 
-type Route struct {
-	Handler func (w http.ResponseWriter, r *http.Request)
-	Method []string
-}
+type Handler func (w http.ResponseWriter, r *http.Request)
+type MethodMapping map[string]Handler
+type RouteMapping map[string]Route
 
-type RouteMapping struct {
-	Mapping map[string]Route
+type Route struct {
+	Description string
+	MethodMapping MethodMapping
 }
 
 

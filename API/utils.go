@@ -8,13 +8,14 @@ import (
 
 const (
 	MethodNotAllowed    = "method not allowed"
+	MissingParameter = "missing parameter"
 	InvalidHeaderBearer = "invalid header (authorization bearer)"
 	InvalidHeaderBasic  = "invalid header (authorization basic)"
 )
 
-func BuildJsonResponse(status bool, message string, content interface{}, w http.ResponseWriter) error {
+func (a API) BuildJsonResponse(status bool, message string, content interface{}, w http.ResponseWriter) error {
 	w.Header().Add("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Origin", a.Service.CorsOrigin())
 	w.WriteHeader(http.StatusOK)
 	return json.NewEncoder(w).Encode(response{
 		Status:  status,
@@ -23,9 +24,9 @@ func BuildJsonResponse(status bool, message string, content interface{}, w http.
 	})
 }
 
-func BuildErrorResponse(httpCode int, message string, w http.ResponseWriter) error {
+func (a API) BuildErrorResponse(httpCode int, message string, w http.ResponseWriter) error {
 	w.Header().Add("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Origin", a.Service.CorsOrigin())
 	w.WriteHeader(httpCode)
 	return json.NewEncoder(w).Encode(response{
 		Status:  false,
@@ -34,20 +35,12 @@ func BuildErrorResponse(httpCode int, message string, w http.ResponseWriter) err
 	})
 }
 
-func BuildPreflightResponse(w http.ResponseWriter) {
-	w.Header().Add("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Authorization")
-	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
-	w.WriteHeader(http.StatusNoContent)
+func (a API) BuildMissingParameter(w http.ResponseWriter) error {
+	return a.BuildErrorResponse(http.StatusBadRequest, MissingParameter, w)
 }
 
-func BuildMissingParameter(w http.ResponseWriter) error {
-	return BuildErrorResponse(http.StatusBadRequest, "missing parameter", w)
-}
-
-func BuildMethodNotAllowedResponse(w http.ResponseWriter) error {
-	return BuildErrorResponse(http.StatusMethodNotAllowed, MethodNotAllowed, w)
+func (a API) BuildMethodNotAllowedResponse(w http.ResponseWriter) error {
+	return a.BuildErrorResponse(http.StatusMethodNotAllowed, MethodNotAllowed, w)
 }
 
 func CheckHttpMethod(r *http.Request, expectedMethod string) bool {

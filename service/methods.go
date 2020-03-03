@@ -19,6 +19,10 @@ func (a *Service) InfosString() string {
 	return a.infos.toString()
 }
 
+func (a *Service) CorsOrigin() string {
+	return a.serverConfig["corsOrigin"]
+}
+
 func (a *Service) Start() {
 	a.logger.Info("starting the API service")
 	// a.srv.ListenAndServe()

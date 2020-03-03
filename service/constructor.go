@@ -13,12 +13,12 @@ var routeList RouteMapping
 
 func addJsonHeader(w http.ResponseWriter) {
 	w.Header().Add("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Origin", corsOrigin)
 }
 
 func routesListRoute(w http.ResponseWriter, r *http.Request) {
 	var routeNameList []string
-	for k, _ := range routeList.Mapping {
+	for k, _ := range routeList {
 		routeNameList = append(routeNameList, k)
 	}
 
@@ -59,21 +59,28 @@ func NewService(routes RouteMapping, serverConfig map[string]string,
 
 		apiLogger = log.NewLogger(infosObj.Title, logLevel.LevelFromBool(verbose))
 
-		if _, check := routes.Mapping["/infos"]; ! check {
-			routes.Mapping["/infos"] = Route{infosRoute, []string{http.MethodGet}}
+		if _, check := routes["/infos"]; ! check {
+			routes["/infos"] = Route{"API infos", MethodMapping {
+				http.MethodGet: infosRoute,
+			}}
 		}
 
-		if _, check := routes.Mapping["/health"]; ! check {
-			routes.Mapping["/health"] = Route{healthRoute, []string{http.MethodGet}}
+		if _, check := routes["/health"]; ! check {
+			routes["/health"] = Route{"API health", MethodMapping{
+				http.MethodGet: healthRoute,
+			}}
 		}
 
-		if _, check := routes.Mapping["/routes"]; ! check {
-			routes.Mapping["/routes"] = Route{routesListRoute, []string{http.MethodGet}}
+		if _, check := routes["/routes"]; ! check {
+			routes["/routes"] = Route{"route list", MethodMapping{
+				http.MethodGet: routesListRoute,
+			}}
 		}
 
 		routeList = routes
 
-		router := newRouter(routes)
+		router, err := newRouter(routes, serverConfig["corsOrigin"])
+		apiLogger.CheckErrFatal(err)
 
 		return Service{
 			srv: nil,

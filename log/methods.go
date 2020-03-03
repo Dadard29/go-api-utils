@@ -15,6 +15,10 @@ func (logger *Logger) Log(s string, level int) int {
 		content = strings.ToLower(s)
 	}
 
+	if level == logLevel.FATAL {
+		panic(s)
+	}
+
 	if level >= logger.level {
 		levelStr, err := getLevelName(level)
 		if err != nil {
