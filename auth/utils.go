@@ -12,6 +12,7 @@ import (
 
 var logger = log.NewLogger("AUTH", logLevel.DEBUG)
 
+// get the credentials from HTTP basic auth
 func ParseBasicAuth(r *http.Request) (username string, password string, err error) {
 	header := r.Header.Get("Authorization")
 
@@ -31,6 +32,7 @@ func ParseBasicAuth(r *http.Request) (username string, password string, err erro
 	return userAndPass[0], userAndPass[1], nil
 }
 
+// get the token from Bearer format
 func ParseBearerToken(r *http.Request) (token string, err error) {
 	header := r.Header.Get("Authorization")
 
@@ -42,6 +44,7 @@ func ParseBearerToken(r *http.Request) (token string, err error) {
 	return splitted[1], nil
 }
 
+// get a key from a header or from the query
 func ParseApiKey(r *http.Request, key string, inHeader bool) (token string) {
 	// if inHeader true, search the key in the headers
 	// else, search in the query params

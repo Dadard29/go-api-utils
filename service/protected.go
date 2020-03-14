@@ -114,7 +114,15 @@ func newServer(router *mux.Router, serverConfig map[string]string, logger log.Lo
 	)
 
 	readTimeout, err := strconv.Atoi(serverConfig["readTimeout"])
+	if err != nil {
+		return nil, err
+	}
+
 	writeTimeout, err := strconv.Atoi(serverConfig["writeTimeout"])
+	if err != nil {
+		return nil, err
+	}
+
 	idleTimeout, err := strconv.Atoi(serverConfig["idleTimeout"])
 
 	if err != nil {
