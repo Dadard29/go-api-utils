@@ -18,7 +18,7 @@ func addJsonHeader(w http.ResponseWriter) {
 
 func routesListRoute(w http.ResponseWriter, r *http.Request) {
 	var routeNameList []string
-	for k, _ := range routeList {
+	for k := range routeList {
 		routeNameList = append(routeNameList, k)
 	}
 

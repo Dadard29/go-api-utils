@@ -21,7 +21,7 @@ var serverConfig, _ = accessor.GetSubcategoryFromFile("api", "server")
 var infosConfig, _ = accessor.GetSubcategoryFromFile("api", "infos")
 
 var routes = service.RouteMapping{Mapping: map[string]service.Route{
-	"/test": service.Route{Handler: testRoute, Method: []string{http.MethodGet}},
+	"/test": {Handler: testRoute, Method: []string{http.MethodGet}},
 }}
 
 var a = service.NewService(routes, serverConfig, infosConfig, true)
