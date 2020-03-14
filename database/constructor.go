@@ -17,8 +17,8 @@ func NewConnector(configMap map[string]string, verbose bool, modelList []interfa
 		usernameKey:  configMap["usernameKey"],
 		passwordKey:  configMap["passwordKey"],
 		databaseName: configMap["database"],
-		host: configMap["host"],
-		port: configMap["port"],
+		host:         configMap["host"],
+		port:         configMap["port"],
 	}
 
 	loggerName := fmt.Sprintf("%s_connector", dbConfig.databaseName)
@@ -40,15 +40,15 @@ func NewConnector(configMap map[string]string, verbose bool, modelList []interfa
 	logger.Info(fmt.Sprintf("connected to %s...", dbConfig.databaseName))
 
 	for _, v := range modelList {
-		if ! db.HasTable(v) {
+		if !db.HasTable(v) {
 			msg := fmt.Sprintf("Model %v does not have existing table\n", reflect.TypeOf(v))
 			logger.Warning(msg)
 		}
 	}
 
 	return &Connector{
-		Orm: db,
+		Orm:      db,
 		dbConfig: dbConfig,
-		logger: logger,
+		logger:   logger,
 	}
 }

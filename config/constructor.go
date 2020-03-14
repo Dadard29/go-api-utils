@@ -16,8 +16,8 @@ func NewAccessor(path string, verbose bool) *Accessor {
 
 	return &Accessor{
 		configFilePath: path,
-		file: file,
-		env: env,
-		logger: logger,
+		file:           file,
+		env:            env,
+		logger:         logger,
 	}
 }

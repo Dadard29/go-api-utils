@@ -67,14 +67,13 @@ func (a *Service) AddFileServer(prefix string, relativePath string) {
 	a.logger.CheckErr(err)
 
 	slash := "/"
-	if ! strings.HasPrefix(prefix, slash) {
+	if !strings.HasPrefix(prefix, slash) {
 		prefix = slash + prefix
 	}
 
-	if ! strings.HasSuffix(prefix, slash) {
+	if !strings.HasSuffix(prefix, slash) {
 		prefix = prefix + slash
 	}
 
 	a.router.PathPrefix(prefix).Handler(http.StripPrefix(prefix, http.FileServer(http.Dir(fileServerRoot))))
 }
-

@@ -16,23 +16,23 @@ var title string
 var corsOrigin string
 
 func (i infos) toString() string {
-	return fmt.Sprintf("\n===== * =====\n" +
-		"%s\n" +
-		"version: \t%s\n" +
-		"description: \t%s\n" +
-		"contact email: \t%s\n" +
+	return fmt.Sprintf("\n===== * =====\n"+
+		"%s\n"+
+		"version: \t%s\n"+
+		"description: \t%s\n"+
+		"contact email: \t%s\n"+
 		"===== * =====\n",
 		i.Title, i.Version, i.Description, i.ContactEmail)
 }
 
 func (i infos) toMap() map[string]string {
-	return map[string]string {
-		"Title": i.Title,
-		"Version": i.Version,
-		"Description": i.Description,
+	return map[string]string{
+		"Title":        i.Title,
+		"Version":      i.Version,
+		"Description":  i.Description,
 		"ContactEmail": i.ContactEmail,
-		"License": i.License,
-		"LicenseUrl": i.LicenseUrl.String(),
+		"License":      i.License,
+		"LicenseUrl":   i.LicenseUrl.String(),
 	}
 }
 
@@ -84,7 +84,6 @@ func newInfos(config map[string]string) (infos, error) {
 		return infos{}, errors.New("error while parsing license url")
 	}
 
-
 	if strings.Contains(title, " ") {
 		return infos{}, errors.New("wrong service title format: no space allowed")
 	}
@@ -93,7 +92,7 @@ func newInfos(config map[string]string) (infos, error) {
 		return infos{}, errors.New("no version given")
 	}
 
-	if ! strings.Contains(contactEmail, "@") {
+	if !strings.Contains(contactEmail, "@") {
 		return infos{}, errors.New("wrong email format: missing '@'")
 	}
 

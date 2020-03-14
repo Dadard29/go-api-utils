@@ -27,8 +27,7 @@ func NewJwtHS256(secret string,
 	pl := struct {
 		jwt.Payload
 		Infos interface{}
-
-	} {
+	}{
 		Payload: jwt.Payload{
 			Issuer:         issuer,
 			Subject:        subject,
@@ -65,7 +64,6 @@ func VerifyJwtHS256(token []byte, secret string) (*JwtPayload, error) {
 	return &pl, nil
 }
 
-
 // private key generated with
 // openssl genrsa 2048 | openssl pkcs8 -topk8 -nocrypt -out private.pem
 func readPrivateKeyFile(pathPrivateKeyFile string) (*rsa.PrivateKey, error) {
@@ -84,7 +82,7 @@ func readPrivateKeyFile(pathPrivateKeyFile string) (*rsa.PrivateKey, error) {
 	}
 
 	privKey, check := parsedKey.(*rsa.PrivateKey)
-	if ! check {
+	if !check {
 		return nil, errors.New("unable to parse private key")
 	}
 
@@ -142,4 +140,3 @@ func DecipherJwtWithJwe(pathPrivateKeyFile string, jwtCiphered []byte) ([]byte, 
 
 	return decrypted, nil
 }
-

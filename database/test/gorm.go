@@ -9,8 +9,8 @@ import (
 
 type Profile struct {
 	//gorm.Model
-	ProfileKey string `gorm:"type:varchar(70);index:profile_key;primary_key"`
-	Username string `gorm:"type:varchar(70);index:username"`
+	ProfileKey     string `gorm:"type:varchar(70);index:profile_key;primary_key"`
+	Username       string `gorm:"type:varchar(70);index:username"`
 	HashedPassword string `gorm:"type:varchar(70);index:hashed_password"`
 }
 

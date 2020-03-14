@@ -15,7 +15,7 @@ type API struct {
 }
 
 type response struct {
-	Status bool
+	Status  bool
 	Message string
 	Content interface{}
 }

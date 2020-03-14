@@ -30,8 +30,8 @@ func TestNewLogger(t *testing.T) {
 
 func TestLog(t *testing.T) {
 	tables := []struct {
-		levelInit int
-		levelLog int
+		levelInit     int
+		levelLog      int
 		levelReturned int
 	}{
 		{logLevel.DEBUG, logLevel.DEBUG, logLevel.DEBUG},

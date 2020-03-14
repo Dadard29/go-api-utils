@@ -8,7 +8,7 @@ import (
 
 const (
 	MethodNotAllowed    = "method not allowed"
-	MissingParameter = "missing parameter"
+	MissingParameter    = "missing parameter"
 	InvalidHeaderBearer = "invalid header (authorization bearer)"
 	InvalidHeaderBasic  = "invalid header (authorization basic)"
 )

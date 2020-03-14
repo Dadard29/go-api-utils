@@ -12,7 +12,7 @@ func loggerError(msg string) {
 }
 
 func NewLogger(name string, level int) Logger {
-	flags := log.Ldate|log.Ltime
+	flags := log.Ldate | log.Ltime
 
 	levelStr, err := getLevelName(level)
 	if err != nil {
@@ -25,9 +25,9 @@ func NewLogger(name string, level int) Logger {
 	logOutput := log.New(os.Stdout, prefix, flags)
 
 	return Logger{
-		logger: logOutput,
-		name:   nameUpper,
-		level:  level,
+		logger:   logOutput,
+		name:     nameUpper,
+		level:    level,
 		levelStr: levelStr,
 	}
 }

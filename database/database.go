@@ -15,7 +15,7 @@ type DbConfig struct {
 
 // supports only sql type database
 type Connector struct {
-	Orm *gorm.DB
+	Orm      *gorm.DB
 	dbConfig DbConfig
-	logger log.Logger
+	logger   log.Logger
 }

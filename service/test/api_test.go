@@ -2,8 +2,8 @@ package test
 
 import (
 	"encoding/json"
-	"github.com/Dadard29/go-api-utils/service"
 	"github.com/Dadard29/go-api-utils/config"
+	"github.com/Dadard29/go-api-utils/service"
 	"net/http"
 	"testing"
 )

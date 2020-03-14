@@ -4,9 +4,9 @@ import "github.com/Dadard29/go-api-utils/log"
 
 type Accessor struct {
 	configFilePath string
-	file *file
-	env *env
-	logger log.Logger
+	file           *file
+	env            *env
+	logger         log.Logger
 }
 
 type file struct {
@@ -16,5 +16,3 @@ type file struct {
 type env struct {
 	config map[string]string
 }
-
-

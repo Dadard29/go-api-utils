@@ -8,19 +8,19 @@ import (
 )
 
 type infos struct {
-	Title 	string
-	Version string
-	Description string
+	Title        string
+	Version      string
+	Description  string
 	ContactEmail string
-	License string
-	LicenseUrl *url.URL
+	License      string
+	LicenseUrl   *url.URL
 }
 
 type Service struct {
-	srv *http.Server
-	infos infos
-	logger log.Logger
-	router *mux.Router
+	srv          *http.Server
+	infos        infos
+	logger       log.Logger
+	router       *mux.Router
 	serverConfig map[string]string
 }
 
@@ -28,13 +28,11 @@ func (a *Service) Router() *mux.Router {
 	return a.router
 }
 
-type Handler func (w http.ResponseWriter, r *http.Request)
+type Handler func(w http.ResponseWriter, r *http.Request)
 type MethodMapping map[string]Handler
 type RouteMapping map[string]Route
 
 type Route struct {
-	Description string
+	Description   string
 	MethodMapping MethodMapping
 }
-
-

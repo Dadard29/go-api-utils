@@ -3,11 +3,11 @@ package log
 import "errors"
 
 const (
-	debugStr = "DEBUG"
-	infoStr = "INFO"
+	debugStr   = "DEBUG"
+	infoStr    = "INFO"
 	warningStr = "WARNING"
-	errorStr = "ERROR"
-	fatalStr = "FATAL"
+	errorStr   = "ERROR"
+	fatalStr   = "FATAL"
 )
 
 func getLevelName(level int) (string, error) {

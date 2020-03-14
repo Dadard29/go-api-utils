@@ -51,44 +51,42 @@ func healthRoute(w http.ResponseWriter, r *http.Request) {
 
 func NewService(routes RouteMapping, serverConfig map[string]string,
 	infosConfig map[string]string, verbose bool) Service {
-		var err error
-		infosObj, err = newInfos(infosConfig)
-		if err != nil {
-			panic(err)
-		}
+	var err error
+	infosObj, err = newInfos(infosConfig)
+	if err != nil {
+		panic(err)
+	}
 
-		apiLogger = log.NewLogger(infosObj.Title, logLevel.LevelFromBool(verbose))
+	apiLogger = log.NewLogger(infosObj.Title, logLevel.LevelFromBool(verbose))
 
-		if _, check := routes["/infos"]; ! check {
-			routes["/infos"] = Route{"API infos", MethodMapping {
-				http.MethodGet: infosRoute,
-			}}
-		}
+	if _, check := routes["/infos"]; !check {
+		routes["/infos"] = Route{"API infos", MethodMapping{
+			http.MethodGet: infosRoute,
+		}}
+	}
 
-		if _, check := routes["/health"]; ! check {
-			routes["/health"] = Route{"API health", MethodMapping{
-				http.MethodGet: healthRoute,
-			}}
-		}
+	if _, check := routes["/health"]; !check {
+		routes["/health"] = Route{"API health", MethodMapping{
+			http.MethodGet: healthRoute,
+		}}
+	}
 
-		if _, check := routes["/routes"]; ! check {
-			routes["/routes"] = Route{"route list", MethodMapping{
-				http.MethodGet: routesListRoute,
-			}}
-		}
+	if _, check := routes["/routes"]; !check {
+		routes["/routes"] = Route{"route list", MethodMapping{
+			http.MethodGet: routesListRoute,
+		}}
+	}
 
-		routeList = routes
+	routeList = routes
 
-		router, err := newRouter(routes, serverConfig["corsOrigin"])
-		apiLogger.CheckErrFatal(err)
+	router, err := newRouter(routes, serverConfig["corsOrigin"])
+	apiLogger.CheckErrFatal(err)
 
-		return Service{
-			srv: nil,
-			router: router,
-			infos:  infosObj,
-			logger: apiLogger,
-			serverConfig: serverConfig,
-		}
+	return Service{
+		srv:          nil,
+		router:       router,
+		infos:        infosObj,
+		logger:       apiLogger,
+		serverConfig: serverConfig,
+	}
 }
-
-
