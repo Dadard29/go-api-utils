@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -24,7 +25,6 @@ func (a *Service) CorsOrigin() string {
 }
 
 func (a *Service) Start() {
-	a.logger.Info("starting the API service")
 	// a.srv.ListenAndServe()
 
 	server, err := newServer(a.router, a.serverConfig, apiLogger)
@@ -32,6 +32,7 @@ func (a *Service) Start() {
 
 	a.srv = server
 
+	a.logger.Info(fmt.Sprintf("starting the API service on %s", server.Addr))
 	go func() {
 		a.srv.ListenAndServe()
 	}()
@@ -44,7 +45,7 @@ func (a *Service) Start() {
 func (a *Service) Stop() error {
 	if a.srv == nil {
 		msg := "server not started. start it first you idiot."
-		a.logger.Error("server not started. start it first you idiot.")
+		a.logger.Error(msg)
 		return errors.New(msg)
 	}
 
