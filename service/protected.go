@@ -47,7 +47,7 @@ func loggingMiddleware(next http.Handler) http.Handler {
 
 func corsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Access-Control-Allow-Origin", corsOrigin)
-	w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+	w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Access-Token")
 	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
 	w.WriteHeader(http.StatusNoContent)
 }
