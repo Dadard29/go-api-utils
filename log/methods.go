@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	"github.com/Dadard29/go-api-utils/log/logLevel"
+	"github.com/fatih/color"
 	"strings"
 )
 
@@ -25,8 +26,14 @@ func (logger *Logger) Log(s string, level int) int {
 			loggerError(err.Error())
 		}
 
+		c := getLevelColor(level)
+
 		message := fmt.Sprintf("%s %s", levelStr, content)
+
+		color.Set(c)
 		logger.logger.Println(message)
+		color.Unset()
+
 		return level
 	} else {
 		return -1

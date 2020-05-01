@@ -1,6 +1,9 @@
 package log
 
-import "errors"
+import (
+	"errors"
+	"github.com/fatih/color"
+)
 
 const (
 	debugStr   = "DEBUG"
@@ -9,6 +12,31 @@ const (
 	errorStr   = "ERROR"
 	fatalStr   = "FATAL"
 )
+
+const (
+	debugColor = color.FgWhite
+	infoColor = color.FgGreen
+	warningColor = color.FgYellow
+	errorColor = color.FgRed
+	fatalColor = color.FgHiRed
+)
+
+func getLevelColor(level int) color.Attribute {
+	switch level {
+	case 0:
+		return debugColor
+	case 1:
+		return infoColor
+	case 2:
+		return warningColor
+	case 3:
+		return errorColor
+	case 4:
+		return fatalColor
+	}
+
+	return color.FgWhite
+}
 
 func getLevelName(level int) (string, error) {
 	levelStr := ""
