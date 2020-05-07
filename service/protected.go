@@ -38,9 +38,9 @@ func (i infos) toMap() map[string]string {
 
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		msg := fmt.Sprintf("%s %s %s %s", r.Host, r.RemoteAddr, r.Method, r.URL)
+		msg := fmt.Sprintf("%s %s %s\t %s", r.Host, r.RemoteAddr, r.Method, r.URL)
 		// fmt.Println(msg)
-		apiLogger.Info(msg)
+		apiLogger.Debug(msg)
 
 		next.ServeHTTP(w, r)
 	})
