@@ -11,13 +11,18 @@ const (
 	MissingParameter    = "missing parameter"
 	InvalidHeaderBearer = "invalid header (authorization bearer)"
 	InvalidHeaderBasic  = "invalid header (authorization basic)"
+
+	jsonIndent = "    "
 )
 
 func (a API) BuildJsonResponse(status bool, message string, content interface{}, w http.ResponseWriter) error {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Add("Access-Control-Allow-Origin", a.Service.CorsOrigin())
 	w.WriteHeader(http.StatusOK)
-	return json.NewEncoder(w).Encode(response{
+
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", jsonIndent)
+	return encoder.Encode(response{
 		Status:  status,
 		Message: message,
 		Content: content,
@@ -28,7 +33,10 @@ func (a API) BuildErrorResponse(httpCode int, message string, w http.ResponseWri
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Add("Access-Control-Allow-Origin", a.Service.CorsOrigin())
 	w.WriteHeader(httpCode)
-	return json.NewEncoder(w).Encode(response{
+
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", jsonIndent)
+	return encoder.Encode(response{
 		Status:  false,
 		Message: message,
 		Content: struct{}{},

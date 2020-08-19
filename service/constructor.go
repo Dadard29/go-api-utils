@@ -11,6 +11,8 @@ var infosObj infos
 var apiLogger log.Logger
 var routeList RouteMapping
 
+var jsonIndent = "    "
+
 func addJsonHeader(w http.ResponseWriter) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Add("Access-Control-Allow-Origin", corsOrigin)
@@ -24,7 +26,9 @@ func routesListRoute(w http.ResponseWriter, r *http.Request) {
 
 	addJsonHeader(w)
 
-	err := json.NewEncoder(w).Encode(routeNameList)
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", jsonIndent)
+	err := encoder.Encode(routeNameList)
 	//err := API.BuildJsonResponse(true, "route list retrieved", routeNameList, w)
 	apiLogger.CheckErr(err)
 }
@@ -32,14 +36,19 @@ func routesListRoute(w http.ResponseWriter, r *http.Request) {
 func infosRoute(w http.ResponseWriter, r *http.Request) {
 	addJsonHeader(w)
 
-	err := json.NewEncoder(w).Encode(infosObj.toMap())
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", jsonIndent)
+	err := encoder.Encode(infosObj.toMap())
 	//err := API.BuildJsonResponse(true, "infos retrieved", infosObj.toMap(), w)
 	apiLogger.CheckErr(err)
 }
 
 func healthRoute(w http.ResponseWriter, r *http.Request) {
 	addJsonHeader(w)
-	err := json.NewEncoder(w).Encode(struct {
+
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", jsonIndent)
+	err := encoder.Encode(struct {
 		Status bool
 	}{
 		Status: true,
