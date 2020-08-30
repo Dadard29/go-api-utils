@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/Dadard29/go-api-utils/log"
 	"github.com/Dadard29/go-api-utils/log/logLevel"
-	_ "github.com/go-sql-driver/mysql"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"
