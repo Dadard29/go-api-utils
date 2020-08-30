@@ -5,9 +5,10 @@ import (
 	"github.com/Dadard29/go-api-utils/log"
 	"github.com/Dadard29/go-api-utils/log/logLevel"
 	_ "github.com/go-sql-driver/mysql"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"os"
+	"reflect"
 )
 
 func NewConnector(configMap map[string]string, verbose bool, modelList []interface{}) *Connector {
@@ -34,17 +35,16 @@ func NewConnector(configMap map[string]string, verbose bool, modelList []interfa
 		dbConfig.host, dbConfig.port, dbConfig.databaseName, parseTime)
 
 	logger.Debug(fmt.Sprintf("connecting to %s...", dbConfig.databaseName))
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open("mysql", dsn)
 	logger.CheckErrFatal(err)
 	logger.Info(fmt.Sprintf("connected to %s...", dbConfig.databaseName))
 
-	// fixme
-	//for _, v := range modelList {
-	//	if !db.DB().HasTable(v) {
-	//		msg := fmt.Sprintf("Model %v does not have existing table\n", reflect.TypeOf(v))
-	//		logger.Warning(msg)
-	//	}
-	//}
+	for _, v := range modelList {
+		if !db.HasTable(v) {
+			msg := fmt.Sprintf("Model %v does not have existing table\n", reflect.TypeOf(v))
+			logger.Warning(msg)
+		}
+	}
 
 	return &Connector{
 		Orm:      db,

@@ -3,8 +3,8 @@ package test
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type Profile struct {
@@ -25,7 +25,7 @@ func TestGorm() {
 
 	dsn := fmt.Sprintf("%s:%s@/%s", username, password, dbName)
 
-	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, _ := gorm.Open("mysql", dsn)
 
 	model := Profile{
 		ProfileKey:     "pk3",
@@ -41,4 +41,5 @@ func TestGorm() {
 	}
 	db.Find(&modelQuery)
 	fmt.Printf("%v\n", model)
+	db.Close()
 }

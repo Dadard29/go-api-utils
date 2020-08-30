@@ -2,7 +2,7 @@ package database
 
 import (
 	"github.com/Dadard29/go-api-utils/log"
-	"gorm.io/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type DbConfig struct {
