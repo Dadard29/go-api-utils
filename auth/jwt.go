@@ -7,7 +7,7 @@ import (
 	"encoding/pem"
 	"errors"
 	"github.com/gbrlsnchs/jwt"
-	"github.com/square/go-jose"
+	"gopkg.in/square/go-jose.v2"
 	"io/ioutil"
 	"time"
 )
