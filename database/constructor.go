@@ -42,8 +42,9 @@ func NewConnector(configMap map[string]string, verbose bool, modelList []interfa
 	for err != nil {
 		db, err = gorm.Open("mysql", dsn)
 		if err != nil {
-			logger.Error("failed to connect to database")
-			time.Sleep(15 * time.Second)
+			delay := 15
+			logger.Error(fmt.Sprintf("failed to connect to database, retrying in %d seconds...", delay))
+			time.Sleep(time.Duration(delay) * time.Second)
 		}
 	}
 
